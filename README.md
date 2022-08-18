@@ -6,13 +6,13 @@ Status checker for some common websites that exist online. The application conti
 
 ## 1. /POST/websites
 
-### Sample Input
+### Sample Input (/POST/websites)
 
     {
         "websites": ["https://www.youtube.com", "https://www.google.com", "https://www.facebook.com", "https:www.fakewebsite123.com"]
     }
 
-### Sample Response
+### Sample Response (/POST/websites)
 
     List of websites updated to [https://www.youtube.com https://www.google.com https://www.facebook.com https:www.fakewebsite123.com] Successfully.
 

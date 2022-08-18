@@ -1,4 +1,4 @@
-module github.com/final-project
+module github.com/i-m-vivek/final-project
 
 go 1.19
 
