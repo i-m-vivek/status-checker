@@ -1,4 +1,4 @@
-module github.com/i-m-vivek/final-project
+module github.com/i-m-vivek/status-checker
 
 go 1.19
 

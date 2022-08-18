@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/i-m-vivek/final-project/server"
+	"github.com/i-m-vivek/status-checker/server"
 )
 
 func main() {
