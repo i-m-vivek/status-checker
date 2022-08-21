@@ -1,4 +1,4 @@
-package server
+package util
 
 import (
 	"fmt"
@@ -39,6 +39,8 @@ func (h HttpChecker) Check(myurl string) (status string,
 func checkHelper(myurl string, wg *sync.WaitGroup, website_status *map[string]string) {
 	defer wg.Done()
 
+	fmt.Println("Checking ::", myurl)
+
 	var hchecker HttpChecker
 	status, err := hchecker.Check(myurl)
 
@@ -47,6 +49,7 @@ func checkHelper(myurl string, wg *sync.WaitGroup, website_status *map[string]st
 	}
 
 	(*website_status)[myurl] = status
+	fmt.Printf("Status :: %v: %v\n", myurl, status)
 
 }
 
@@ -63,6 +66,6 @@ func WebsiteChecker(website_list []string) map[string]string {
 
 	wg.Wait()
 
-	fmt.Printf("Website status updated successfully\n")
+	fmt.Printf("All website status updated successfully\n")
 	return website_status
 }
