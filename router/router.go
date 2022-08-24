@@ -8,7 +8,7 @@ import (
 func Router() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", controller.WelcomeApiHander)
+	router.HandleFunc("/", controller.WelcomeApiHandler)
 	router.HandleFunc("/POST/websites", controller.PostWebsiteHandler).Methods("POST")
 	router.HandleFunc("/GET/websites", controller.GetWebsiteHandler).Methods("GET")
 

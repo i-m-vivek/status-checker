@@ -10,7 +10,7 @@ import (
 )
 
 // handler for /
-func WelcomeApiHander(w http.ResponseWriter, r *http.Request) {
+func WelcomeApiHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<h1>Hello, Welcome to the Website Checker</h1>")
 
 }
@@ -22,14 +22,14 @@ func PostWebsiteHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	if r.Body == nil {
-		json.NewEncoder(w).Encode("Please send list of websites to check.")
+		json.NewEncoder(w).Encode(map[string]string{"error": "Please send list of websites to check."})
 		return
 	}
 
 	json.NewDecoder(r.Body).Decode(&cache.Websites)
 	cache.Websites.Status = make(map[string]string)
 
-	json.NewEncoder(w).Encode(fmt.Sprintf("Websites in checking: %v", cache.Websites.List))
+	json.NewEncoder(w).Encode(map[string][]string{"websites": cache.Websites.List})
 	cache.Websites.Status = util.WebsiteChecker(cache.Websites.List)
 
 	fmt.Printf("List of websites updated to %v Successfully.\n\n", cache.Websites.List)
@@ -41,18 +41,26 @@ func GetWebsiteHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("API Hit: /GET/websites\n\n")
 	w.Header().Set("Content-Type", "application/json")
 
-	website_name := r.URL.Query().Get("name")
+	websiteName := r.URL.Query().Get("name")
 
-	if website_name != "" {
+	if websiteName != "" {
 		resp := make(map[string]string)
-		if cache.Websites.Status[website_name] == "" {
-			resp[website_name] = "Not in database. Please register it by a POST request first."
+		if cache.Websites.Status[websiteName] == "" {
+			resp[websiteName] = "Not in database. Please register it by a POST request first."
 		} else {
-			resp[website_name] = cache.Websites.Status[website_name]
+			resp[websiteName] = cache.Websites.Status[websiteName]
 		}
-		json.NewEncoder(w).Encode(resp)
+		err := json.NewEncoder(w).Encode(resp)
+		if err != nil {
+			fmt.Println("Error:: in GetWebsiteHandler:", err)
+			return
+		}
 		return
 	}
 
-	json.NewEncoder(w).Encode(cache.Websites.Status)
+	err := json.NewEncoder(w).Encode(cache.Websites.Status)
+	if err != nil {
+		fmt.Println("Error:: in GetWebsiteHandler:", err)
+		return
+	}
 }
